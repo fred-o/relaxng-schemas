@@ -1,0 +1,100 @@
+default namespace = "http://www.springframework.org/schema/tool"
+namespace ns1 = "http://www.springframework.org/schema/jms"
+
+start =
+  (notAllowed
+   | element ns1:listener-container {
+       attribute phase { xsd:string }?,
+       attribute prefetch { xsd:int }?,
+       attribute concurrency { xsd:string }?,
+       attribute transaction-manager { xsd:string }?,
+       attribute acknowledge {
+         xsd:NMTOKEN "client"
+         | xsd:NMTOKEN "dups-ok"
+         | xsd:NMTOKEN "auto"
+         | xsd:NMTOKEN "transacted"
+       }?,
+       attribute cache {
+         xsd:NMTOKEN "connection"
+         | xsd:NMTOKEN "session"
+         | xsd:NMTOKEN "auto"
+         | xsd:NMTOKEN "none"
+         | xsd:NMTOKEN "consumer"
+       }?,
+       attribute client-id { xsd:string }?,
+       attribute destination-type {
+         xsd:NMTOKEN "topic"
+         | xsd:NMTOKEN "queue"
+         | xsd:NMTOKEN "durableTopic"
+       }?,
+       attribute error-handler { xsd:string }?,
+       attribute message-converter { xsd:string }?,
+       attribute destination-resolver { xsd:string }?,
+       attribute task-executor { xsd:string }?,
+       attribute connection-factory { xsd:string }?,
+       attribute container-class { xsd:string }?,
+       attribute container-type {
+         xsd:NMTOKEN "default" | xsd:NMTOKEN "simple"
+       }?,
+       element ns1:listener { listenerType }*
+     })
+  | (notAllowed
+     | element ns1:jca-listener-container {
+         attribute phase { xsd:string }?,
+         attribute prefetch { xsd:int }?,
+         attribute concurrency { xsd:string }?,
+         attribute transaction-manager { xsd:string }?,
+         attribute acknowledge {
+           xsd:NMTOKEN "client"
+           | xsd:NMTOKEN "dups-ok"
+           | xsd:NMTOKEN "auto"
+           | xsd:NMTOKEN "transacted"
+         }?,
+         attribute client-id { xsd:string }?,
+         attribute destination-type {
+           xsd:NMTOKEN "topic"
+           | xsd:NMTOKEN "queue"
+           | xsd:NMTOKEN "durableTopic"
+         }?,
+         attribute message-converter { xsd:string }?,
+         attribute destination-resolver { xsd:string }?,
+         attribute activation-spec-factory { xsd:string }?,
+         attribute resource-adapter { xsd:string }?,
+         element ns1:listener { listenerType }*
+       })
+  | (notAllowed
+     | element annotation {
+         attribute kind { xsd:string "direct" | xsd:string "ref" }?,
+         element expected-type {
+           attribute type { xsd:string }
+         }?,
+         element assignable-to {
+           attribute restriction {
+             xsd:NMTOKEN "both"
+             | xsd:NMTOKEN "interface-only"
+             | xsd:NMTOKEN "class-only"
+           }?,
+           attribute type { xsd:string }?
+         }?,
+         element exports {
+           attribute identifier { xsd:string }?,
+           attribute type { xsd:string }?
+         }*,
+         element registers-scope {
+           attribute name { xsd:string }
+         }*,
+         element expected-method {
+           attribute expression { xsd:string }?,
+           attribute type-ref { xsd:string }?,
+           attribute type { xsd:string }?
+         }*
+       })
+listenerType =
+  (attribute response-destination { xsd:string }?,
+   attribute method { xsd:string }?,
+   attribute ref { xsd:string },
+   attribute selector { xsd:string }?,
+   attribute subscription { xsd:string }?,
+   attribute destination { xsd:string },
+   attribute id { xsd:ID }?),
+  empty

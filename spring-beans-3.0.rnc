@@ -1,0 +1,297 @@
+namespace local = ""
+default namespace ns1 = "http://www.springframework.org/schema/beans"
+
+start =
+  set
+  | \attribute
+  | qualifier
+  | meta
+  | lookup-method
+  | arg-type
+  | (notAllowed
+     | element beans {
+         attribute default-destroy-method { xsd:string }?,
+         attribute default-init-method { xsd:string }?,
+         attribute default-autowire-candidates { xsd:string }?,
+         attribute default-autowire {
+           xsd:NMTOKEN "no"
+           | xsd:NMTOKEN "byName"
+           | xsd:NMTOKEN "byType"
+           | xsd:NMTOKEN "constructor"
+         }?,
+         attribute default-merge { xsd:boolean }?,
+         attribute default-lazy-init { xsd:boolean }?,
+         description?,
+         (import | alias | bean)+,
+         attribute * - (xml:id
+                        | xml:base
+                        | xml:space
+                        | xml:lang
+                        | ns1:*
+                        | local:*) { text }*,
+         lang?,
+         space?,
+         base?,
+         id?
+       })
+  | description
+  | value
+  | map
+  | import
+  | idref
+  | null
+  | key
+  | bean
+  | constructor-arg
+  | alias
+  | replaced-method
+  | prop
+  | property
+  | \list
+  | ref
+  | entry
+  | props
+  | array
+\attribute =
+  notAllowed
+  | element attribute { metaType }
+set =
+  notAllowed
+  | element set {
+      anonymous1,
+      attribute merge {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?
+    }
+description =
+  notAllowed
+  | element description { text }
+props =
+  notAllowed
+  | element props {
+      anonymous0,
+      prop*,
+      attribute merge {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?
+    }
+ref =
+  notAllowed
+  | element ref {
+      attribute bean { xsd:string }?,
+      attribute local { xsd:IDREF }?,
+      attribute parent { xsd:string }?
+    }
+value =
+  notAllowed
+  | element value {
+      mixed {
+        attribute type { xsd:string }?
+      }
+    }
+lookup-method =
+  notAllowed
+  | element lookup-method {
+      attribute name { xsd:string }?,
+      attribute bean { xsd:string }?
+    }
+import =
+  notAllowed
+  | element import {
+      attribute resource { xsd:string }
+    }
+base = attribute xml:base { xsd:anyURI }
+\list =
+  notAllowed
+  | element list {
+      anonymous1,
+      attribute merge {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?
+    }
+alias =
+  notAllowed
+  | element alias {
+      attribute name { xsd:string },
+      attribute alias { xsd:string }
+    }
+lang = attribute xml:lang { xsd:language | xsd:string "" }
+meta =
+  notAllowed
+  | element meta { metaType }
+qualifier =
+  notAllowed
+  | element qualifier {
+      attribute value { xsd:string }?,
+      attribute type { xsd:string }?,
+      \attribute*
+    }
+property =
+  notAllowed
+  | element property {
+      attribute value { xsd:string }?,
+      attribute ref { xsd:string }?,
+      attribute name { xsd:string },
+      description?,
+      (meta
+       | bean
+       | ref
+       | idref
+       | value
+       | null
+       | array
+       | \list
+       | set
+       | map
+       | props)?
+    }
+id = attribute xml:id { xsd:ID }
+idref =
+  notAllowed
+  | element idref {
+      attribute bean { xsd:string }?,
+      attribute local { xsd:IDREF }?
+    }
+array =
+  notAllowed
+  | element array {
+      anonymous1,
+      attribute merge {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?
+    }
+prop =
+  notAllowed
+  | element prop {
+      mixed {
+        attribute key { xsd:string }
+      }
+    }
+anonymous0 = attribute value-type { xsd:string }?
+map =
+  notAllowed
+  | element map {
+      anonymous0,
+      description?,
+      entry*,
+      attribute key-type { xsd:string }?,
+      attribute merge {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?
+    }
+space =
+  attribute xml:space { xsd:NCName "default" | xsd:NCName "preserve" }
+arg-type =
+  notAllowed
+  | element arg-type {
+      mixed {
+        attribute match { xsd:string }?
+      }
+    }
+null =
+  notAllowed
+  | element null { text }
+replaced-method =
+  notAllowed
+  | element replaced-method {
+      attribute replacer { xsd:string }?,
+      attribute name { xsd:string }?,
+      arg-type*
+    }
+anonymous1 = anonymous0, collectionElements
+entry =
+  notAllowed
+  | element entry {
+      attribute value-ref { xsd:string }?,
+      attribute value { xsd:string }?,
+      attribute key-ref { xsd:string }?,
+      attribute key { xsd:string }?,
+      key?,
+      collectionElements
+    }
+metaType =
+  (attribute value { xsd:string },
+   attribute key { xsd:string }),
+  empty
+key =
+  notAllowed
+  | element key { collectionElements }
+bean =
+  notAllowed
+  | element bean {
+      attribute id { xsd:ID }?,
+      description?,
+      (meta
+       | constructor-arg
+       | property
+       | qualifier
+       | lookup-method
+       | replaced-method)+,
+      attribute factory-bean { xsd:string }?,
+      attribute factory-method { xsd:string }?,
+      attribute destroy-method { xsd:string }?,
+      attribute init-method { xsd:string }?,
+      attribute primary { xsd:boolean }?,
+      attribute autowire-candidate {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?,
+      attribute depends-on { xsd:string }?,
+      attribute autowire {
+        xsd:NMTOKEN "default"
+        | xsd:NMTOKEN "no"
+        | xsd:NMTOKEN "byName"
+        | xsd:NMTOKEN "byType"
+        | xsd:NMTOKEN "constructor"
+      }?,
+      attribute lazy-init {
+        xsd:NMTOKEN "default" | xsd:NMTOKEN "false" | xsd:NMTOKEN "true"
+      }?,
+      attribute abstract { xsd:boolean }?,
+      attribute scope { xsd:string }?,
+      attribute parent { xsd:string }?,
+      attribute class { xsd:string }?,
+      attribute name { xsd:string }?,
+      attribute * - (xml:id
+                     | xml:base
+                     | xml:space
+                     | xml:lang
+                     | ns1:*
+                     | local:*) { text }*,
+      lang?,
+      space?,
+      base?,
+      id?
+    }
+collectionElements =
+  description?,
+  (bean
+   | ref
+   | idref
+   | value
+   | null
+   | array
+   | \list
+   | set
+   | map
+   | props
+   | notAllowed+)+
+constructor-arg =
+  notAllowed
+  | element constructor-arg {
+      attribute value { xsd:string }?,
+      attribute ref { xsd:string }?,
+      attribute name { xsd:string }?,
+      attribute type { xsd:string }?,
+      attribute index { xsd:string }?,
+      description?,
+      (bean
+       | ref
+       | idref
+       | value
+       | null
+       | array
+       | \list
+       | set
+       | map
+       | props)?
+    }
