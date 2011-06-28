@@ -1,11 +1,14 @@
 <locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
 	<namespace ns="http://www.springframework.org/schema/beans" typeId="SPRING-BEANS-3.0" />
 	<namespace ns="http://www.springframework.org/schema/jms" typeId="SPRING-JMS-3.0" />
+	<namespace ns="http://maven.apache.org/POM/4.0.0" typeId="MAVEN-POM-4.0.0" />
+
 
 	<uri pattern="web.xml" typeId="WEBXML" />
 
 	<typeId id="WEBXML" uri="web-xml.rnc" />
 	<typeId id="SPRING-BEANS-3.0" uri="spring-beans-3.0.rnc" />
 	<typeId id="SPRING-JMS-3.0" uri="spring-jms-3.0.rnc" />
+	<typeId id="MAVEN-POM-4.0.0" uri="maven-v4_0_0.rnc" />
 
 </locatingRules>
