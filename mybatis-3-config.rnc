@@ -1,0 +1,70 @@
+configuration =
+  element configuration {
+    attlist.configuration,
+    properties?,
+    settings?,
+    typeAliases?,
+    typeHandlers?,
+    objectFactory?,
+    objectWrapperFactory?,
+    plugins?,
+    environments?,
+    mappers?
+  }
+attlist.configuration &= empty
+properties = element properties { attlist.properties, property* }
+attlist.properties &=
+  attribute resource { text }?,
+  attribute url { text }?
+property = element property { attlist.property, empty }
+attlist.property &=
+  attribute name { text },
+  attribute value { text }
+settings = element settings { attlist.settings, setting+ }
+attlist.settings &= empty
+setting = element setting { attlist.setting, empty }
+attlist.setting &=
+  attribute name { text },
+  attribute value { text }
+typeAliases = element typeAliases { attlist.typeAliases, typeAlias+ }
+attlist.typeAliases &= empty
+typeAlias = element typeAlias { attlist.typeAlias, empty }
+attlist.typeAlias &=
+  attribute type { text },
+  attribute alias { text }?
+typeHandlers =
+  element typeHandlers { attlist.typeHandlers, typeHandler+ }
+attlist.typeHandlers &= empty
+typeHandler = element typeHandler { attlist.typeHandler, empty }
+attlist.typeHandler &=
+  attribute javaType { text },
+  attribute jdbcType { text }?,
+  attribute handler { text }
+objectFactory =
+  element objectFactory { attlist.objectFactory, property* }
+attlist.objectFactory &= attribute type { text }
+plugins = element plugins { attlist.plugins, plugin+ }
+attlist.plugins &= empty
+plugin = element plugin { attlist.plugin, property* }
+attlist.plugin &= attribute interceptor { text }
+environments =
+  element environments { attlist.environments, environment+ }
+attlist.environments &= attribute default { text }
+environment =
+  element environment {
+    attlist.environment, transactionManager, dataSource
+  }
+attlist.environment &= attribute id { text }
+transactionManager =
+  element transactionManager { attlist.transactionManager, property* }
+attlist.transactionManager &= attribute type { text }
+dataSource = element dataSource { attlist.dataSource, property* }
+attlist.dataSource &= attribute type { text }
+mappers = element mappers { attlist.mappers, mapper+ }
+attlist.mappers &= empty
+mapper = element mapper { attlist.mapper, empty }
+attlist.mapper &=
+  attribute resource { text }?,
+  attribute url { text }?
+objectWrapperFactory |= notAllowed
+start = configuration

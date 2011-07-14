@@ -3,7 +3,6 @@ default namespace = "http://maven.apache.org/POM/4.0.0"
 start =
   notAllowed
   | element project {
-      attribute xsi:schemaLocation { xsd:string }?
       element parent {
         element artifactId { \string }?
         & element groupId { \string }?

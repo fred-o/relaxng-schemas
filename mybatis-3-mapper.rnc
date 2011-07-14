@@ -1,0 +1,286 @@
+mapper =
+  element mapper {
+    attlist.mapper,
+    (cache-ref
+     | cache
+     | resultMap*
+     | parameterMap*
+     | sql*
+     | insert*
+     | update*
+     | delete*
+     | select*)+
+  }
+attlist.mapper &= attribute namespace { text }?
+cache-ref = element cache-ref { attlist.cache-ref, empty }
+attlist.cache-ref &= attribute namespace { text }
+cache = element cache { attlist.cache, property* }
+attlist.cache &=
+  attribute type { text }?,
+  attribute eviction { text }?,
+  attribute flushInterval { text }?,
+  attribute size { text }?,
+  attribute readOnly { text }?
+parameterMap =
+  element parameterMap { attlist.parameterMap, parameter+ }
+attlist.parameterMap &=
+  attribute id { text },
+  attribute type { text }
+parameter = element parameter { attlist.parameter, empty }
+attlist.parameter &=
+  attribute property { text },
+  attribute javaType { text }?,
+  attribute jdbcType { text }?,
+  attribute mode { "IN" | "OUT" | "INOUT" }?,
+  attribute resultMap { text }?,
+  attribute scale { text }?,
+  attribute typeHandler { text }?
+resultMap =
+  element resultMap {
+    attlist.resultMap,
+    constructor?,
+    id*,
+    result*,
+    association*,
+    collection*,
+    discriminator?
+  }
+attlist.resultMap &=
+  attribute id { text },
+  attribute type { text },
+  attribute extends { text }?
+constructor = element constructor { attlist.constructor, idArg*, arg* }
+attlist.constructor &= empty
+id = element id { attlist.id, empty }
+attlist.id &=
+  attribute property { text }?,
+  attribute javaType { text }?,
+  attribute column { text }?,
+  attribute jdbcType { text }?,
+  attribute typeHandler { text }?
+result = element result { attlist.result, empty }
+attlist.result &=
+  attribute property { text }?,
+  attribute javaType { text }?,
+  attribute column { text }?,
+  attribute jdbcType { text }?,
+  attribute typeHandler { text }?
+idArg = element idArg { attlist.idArg, empty }
+attlist.idArg &=
+  attribute javaType { text }?,
+  attribute column { text }?,
+  attribute jdbcType { text }?,
+  attribute typeHandler { text }?
+arg = element arg { attlist.arg, empty }
+attlist.arg &=
+  attribute javaType { text }?,
+  attribute column { text }?,
+  attribute jdbcType { text }?,
+  attribute typeHandler { text }?
+collection =
+  element collection {
+    attlist.collection,
+    constructor?,
+    id*,
+    result*,
+    association*,
+    collection*,
+    discriminator?
+  }
+attlist.collection &=
+  attribute property { text },
+  attribute column { text }?,
+  attribute javaType { text }?,
+  attribute ofType { text }?,
+  attribute jdbcType { text }?,
+  attribute select { text }?,
+  attribute resultMap { text }?,
+  attribute typeHandler { text }?,
+  attribute notNullColumn { text }?
+association =
+  element association {
+    attlist.association,
+    constructor?,
+    id*,
+    result*,
+    association*,
+    collection*,
+    discriminator?
+  }
+attlist.association &=
+  attribute property { text },
+  attribute column { text }?,
+  attribute javaType { text }?,
+  attribute jdbcType { text }?,
+  attribute select { text }?,
+  attribute resultMap { text }?,
+  attribute typeHandler { text }?,
+  attribute notNullColumn { text }?
+discriminator = element discriminator { attlist.discriminator, case+ }
+attlist.discriminator &=
+  attribute column { text }?,
+  attribute javaType { text },
+  attribute jdbcType { text }?,
+  attribute typeHandler { text }?
+case =
+  element case {
+    attlist.case,
+    constructor?,
+    id*,
+    result*,
+    association*,
+    collection*,
+    discriminator?
+  }
+attlist.case &=
+  attribute value { text },
+  attribute resultMap { text }?,
+  attribute resultType { text }?
+property = element property { attlist.property, empty }
+attlist.property &=
+  attribute name { text },
+  attribute value { text }
+typeAlias = element typeAlias { attlist.typeAlias, empty }
+attlist.typeAlias &=
+  attribute alias { text },
+  attribute type { text }
+select =
+  element select {
+    attlist.select,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.select &=
+  attribute id { text },
+  attribute parameterMap { text }?,
+  attribute parameterType { text }?,
+  attribute resultMap { text }?,
+  attribute resultType { text }?,
+  attribute resultSetType {
+    "FORWARD_ONLY" | "SCROLL_INSENSITIVE" | "SCROLL_SENSITIVE"
+  }?,
+  attribute statementType { "STATEMENT" | "PREPARED" | "CALLABLE" }?,
+  attribute fetchSize { text }?,
+  attribute timeout { text }?,
+  attribute flushCache { "true" | "false" }?,
+  attribute useCache { "true" | "false" }?
+insert =
+  element insert {
+    attlist.insert,
+    (text
+     | selectKey
+     | \include
+     | trim
+     | where
+     | set
+     | foreach
+     | choose
+     | if)*
+  }
+attlist.insert &=
+  attribute id { text },
+  attribute parameterMap { text }?,
+  attribute parameterType { text }?,
+  attribute timeout { text }?,
+  attribute flushCache { "true" | "false" }?,
+  attribute statementType { "STATEMENT" | "PREPARED" | "CALLABLE" }?,
+  attribute keyProperty { text }?,
+  attribute useGeneratedKeys { "true" | "false" }?,
+  attribute keyColumn { text }?
+selectKey =
+  element selectKey {
+    attlist.selectKey,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.selectKey &=
+  attribute resultType { text }?,
+  attribute statementType { "STATEMENT" | "PREPARED" | "CALLABLE" }?,
+  attribute keyProperty { text }?,
+  attribute order { "BEFORE" | "AFTER" }?
+update =
+  element update {
+    attlist.update,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.update &=
+  attribute id { text },
+  attribute parameterMap { text }?,
+  attribute parameterType { text }?,
+  attribute timeout { text }?,
+  attribute flushCache { "true" | "false" }?,
+  attribute statementType { "STATEMENT" | "PREPARED" | "CALLABLE" }?
+delete =
+  element delete {
+    attlist.delete,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.delete &=
+  attribute id { text },
+  attribute parameterMap { text }?,
+  attribute parameterType { text }?,
+  attribute timeout { text }?,
+  attribute flushCache { "true" | "false" }?,
+  attribute statementType { "STATEMENT" | "PREPARED" | "CALLABLE" }?
+# Dynamic
+\include = element include { attlist.include, empty }
+attlist.include &= attribute refid { text }
+sql =
+  element sql {
+    attlist.sql,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.sql &= attribute id { text }
+trim =
+  element trim {
+    attlist.trim,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.trim &=
+  attribute prefix { text }?,
+  attribute prefixOverrides { text }?,
+  attribute suffix { text }?,
+  attribute suffixOverrides { text }?
+where =
+  element where {
+    attlist.where,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.where &= empty
+set =
+  element set {
+    attlist.set,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.set &= empty
+foreach =
+  element foreach {
+    attlist.foreach,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.foreach &=
+  attribute collection { text },
+  attribute item { text }?,
+  attribute index { text }?,
+  attribute open { text }?,
+  attribute close { text }?,
+  attribute separator { text }?
+choose = element choose { attlist.choose, when*, otherwise? }
+attlist.choose &= empty
+when =
+  element when {
+    attlist.when,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.when &= attribute test { text }
+otherwise =
+  element otherwise {
+    attlist.otherwise,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.otherwise &= empty
+if =
+  element if {
+    attlist.if,
+    (text | \include | trim | where | set | foreach | choose | if)*
+  }
+attlist.if &= attribute test { text }
+start = mapper | typeAlias
